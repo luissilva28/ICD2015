@@ -2,5 +2,27 @@
 
 \subsection{Arquitetura}
 
+Em seguida é apresentada a arquitetura da infraestrutura escolhida.
+
+--- IMAGEM
+
+--STORAGE
+Esta componente é responsável por garantir alta disponibilidade e lidar com a persistência, quer nas máquinas, quer nos discos que a compõem. Tendo em conta o dito anteriormente optou-se por colocar dois discos para persistência de dados do website, e outros dois discos para armazenar a base de dados PostgreSQL. Para lidar com cada par de discos despenderam-se duas máquinas que contem os serviços DRBD e iSCSI. O primeiro serviço simula dois RAID1, onde a caracteristica é a replicação de dados, que no futuro, além da disponibilidade em caso de falha, torna-se bastante útil nas laeituras de disco. O segundo serviço é responsavel por permitir o acesso estes discos remotamente, através de TCP/IP, que usufrui do armazenamento de dados que o serviço anterior oferece.
+
+--CLUSTER
+O Service Cluter é uma componente essencial nesta infraestrutura devido à garantia que fornece quanto à alta disponibilidade. Este Cluster é composto por dois serviços, o PostgreSQL e NFS Server garantindo assim a disponibilidade inicialmente em duas máquinas e em caso de alguma falhar, então os serviçoes vão correr em apenas uma das máquinas, o que certamente irá reduzir o nivel de desempenho, mas sem nunca perder o serviço, visto que se pode agir quando o cluster manager informar que tal aconteciemento se sucedeu.
+
+--WEB
+Esta componente apenas vai receber e atender os pedidos que chegam do exterior, ou seja, contêm o serviço httpd para interpretar os pedidos e o NFS Cliente, que se conecta ao NFS Server do Cluster, onde terá acesso aos ficheiros que necessita para a interpretação e resposta do pedido.
+
+--LVS
+Para garantir que a infraestrutura é estável e segura, foi necessário usar algo que fizesse a distribuição de carga pelos servidores da componente Web. Tendo isto em conta, foi decidido incluir duas máquinas com serviços responsáveis por saberem para onde enviar os pedidos. Para além da distribuição de carga que estes servidores conseguem efetuar, protegem ainda a infraestrutura do mundo exterior, nomeadamente através de Virtual IP, por onde os clientes acedem ao serviço que a infraestrutura dispõe. Desta forma os servidores funcionam tambem como uma Firewall, onde são filtrados os pedidos que não são esperados pela infraestrutura, atribuindo assim, a segurança falada.
+
+
+\subsection{Ambiente de Testes}
+
+--- IMAGEM
+
+
 \subsection{Testes realizados e análise}
 
