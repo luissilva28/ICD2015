@@ -14,6 +14,7 @@ O Service Cluter é uma componente essencial nesta infraestrutura devido à gara
 
 \subsection{WEB}
 Esta componente apenas vai receber e atender os pedidos que chegam do exterior, ou seja, contêm o serviço httpd para interpretar os pedidos e o NFS Cliente, que se conecta ao NFS Server do Cluster, onde terá acesso aos ficheiros que necessita para a interpretação e resposta do pedido.
+O projeto Graphite é um sistema de gráficos em tempo real altamente escalável. Os dados podem ser visualizados através de interfaces web do Graphite.
 
 \subsection{LVS}
 Para garantir que a infraestrutura é estável e segura, foi necessário usar algo que fizesse a distribuição de carga pelos servidores da componente Web. Tendo isto em conta, foi decidido incluir duas máquinas com serviços responsáveis por saberem para onde enviar os pedidos. Para além da distribuição de carga que estes servidores conseguem efetuar, protegem ainda a infraestrutura do mundo exterior, nomeadamente através de Virtual IP, por onde os clientes acedem ao serviço que a infraestrutura dispõe. Desta forma os servidores funcionam tambem como uma Firewall, onde são filtrados os pedidos que não são esperados pela infraestrutura, atribuindo assim, a segurança falada.
