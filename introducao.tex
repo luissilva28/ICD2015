@@ -26,6 +26,12 @@ Desta forma optou-se por dividir o relatório em capítulos diferentes, dividind
 \textbf{Testes e análise de resultados} \textit{Neste ponto serão apresentados os vários testes efetuados bem como os resultados obtidos.}
 \textbf{Conclusão} \textit{Neste ponto é feita uma avaliação crítica do projeto, apresentando as conclusões que achamos necessárias.}
 
+\subsection{O Projeto Graphite}
+O projeto Graphite é um sistema de gráficos em tempo real altamente escalável. O Graphite consiste em três componentes de software sendo elas \textbf{Carbon}, \textbf{Whisper} e \textbf{Web app}.
+\textbf{Carbon} A sua principal tarefa é recolher dados estatisticos da rede e armazená-los em disco.
+\textbf{Whisper} Esta componente é um formato de dados, ou seja, consiste num formato padrão para o armazenamento de dados de séries temporais.
+\textbf{Web App} Consiste num Web app em Django, que fornece uma interface gráfica para o Graphite, ou seja, esta será a interface onde será possivel ver os gráficos pretendidos. Est Web App, permite tambem efetuar uma gestão dos utilizadores, configurando assim quais os usuários que podem criar e guardar os gráficos.
+
 \subsubsection{Especificações do Equipamento utilizado}
 A infraestrutura foi implementada em 3 computadores, sendo que todos os servidores tinham uma versão minimal do CentOS 7.0 de 64 bits. As máquinas possuem as caracteristicas que se apresentam de seguida.
 
