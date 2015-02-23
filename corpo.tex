@@ -37,16 +37,17 @@ Para a configuração do LVS foram instalados 3 serviços, o HAProxy que será u
 HAProxy
 
 Nos servidores haproxy1 e haproxy2, devemos primeiramente instalar o pacote do HAProxy:
-yum install -y haproxy
+\framebox[1.1\width]{yum install -y haproxy} \par
 
 Em seguida abrir o ficheiro /etc/haproxy/haproxy.cfg usando um editor de texto, e substituir a linha “frontend  main *:5000″ por “frontend  main *:80″ e comentar a linha “use_backend static if url_static”.
 Proseguindo para o final do ficheiro, devem ser retiradas as linhas que começam com “server app” e adicionadas as seguintes linhas:
-server httpd1 192.168.0.103:80 check
-server httpd2 192.168.0.104:80 check
+\framebox[1.1\width]{server httpd1 192.168.0.103:80 check} \par
+\framebox[1.1\width]{server httpd2 192.168.0.104:80 check} \par
 
 De seguida, ativar o boot e iniciar o serviço HAProxy:
-systemctl enable haproxy
-systemctl start haproxy
+\framebox[1.1\width]{server httpd2 192.168.0.104:80 check} \par
+\framebox[1.1\width]{systemctl enable haproxy} \par
+\framebox[1.1\width]{systemctl start haproxy} \par
 
 Abrindo agora o ficheiro /etc/firewalld/services/haproxy.xml, devem ser colocadas as seguintes linhas:
 <?xml version="1.0" encoding="utf-8"?>
@@ -57,19 +58,18 @@ Abrindo agora o ficheiro /etc/firewalld/services/haproxy.xml, devem ser colocada
 </service>
 
 No próximo passo é necessário corrigir o contexto do SELinux e permissões do ficheiro haproxy.xml:
-cd /etc/firewalld/services
-restorecon haproxy.xml
-chmod 640 haproxy.xml
+\framebox[1.1\width]{cd /etc/firewalld/services} \par
+\framebox[1.1\width]{restorecon haproxy.xml} \par
+\framebox[1.1\width]{chmod 640 haproxy.xml} \par
 
 Finalmente deve-se fazer update da configuração da firewall:
-firewall-cmd --permanent --add-service=haproxy
-firewall-cmd --reload
-
+\framebox[1.1\width]{firewall-cmd --permanent --add-service=haproxy} \par
+\framebox[1.1\width]{firewall-cmd --reload} \par
 
 Keepalived
 
 Para instalar o pacote do keepalived:
-yum install -y keepalived
+\framebox[1.1\width]{yum install -y keepalived} \par
 
 De seguida é necessário criar um novo arquivo /etc/keepalived/keepalived.conf com as seguintes linhas de código:
 vrrp_script chk_haproxy {
@@ -92,8 +92,8 @@ vrrp_instance VI_1 {
 }
 
 De seguida, para ativar o serviço keepalived na inicialização do sistema é necessário correr os seguintes comandos:
-systemctl enable keepalived
-systemctl start keepalived
+\framebox[1.1\width]{systemctl enable keepalived} \par
+\framebox[1.1\width]{systemctl start keepalived} \par
 
 Finalmente é preciso verificar a presença do VIP no servidor haproxy1:
 # ip a
@@ -116,14 +116,14 @@ valid_lft forever preferred_lft forever
 Apache
 
 Para a instalação do Apache é necessário a criação de um ficheiro index.html em /var/www/html do httpd1 e colocar o seguinte comando:
-Test httpd1
+\framebox[1.1\width]{Test httpd1} \par
 
 Como passo seguinte, é necessário fazer o mesmo para o servidor httpd2, mas substituir por httpd2 no ficheiro index.html:
-Test httpd2
+\framebox[1.1\width]{Test httpd2} \par
 
 Para testar a configuração através de outro servidor basta utilizar os seguintes comandos:
-yum install -y elinks
-elinks http://192.168.0.100
+\framebox[1.1\width]{yum install -y elinks} \par
+\framebox[1.1\width]{elinks http://192.168.0.100} \par
 
 \subsection{Ambiente de Testes}
 
