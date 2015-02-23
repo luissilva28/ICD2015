@@ -1,0 +1,8 @@
+# Pdflatex Output Dir
+pdflatex-output/
+
+# Pdflatex output files
+*.aux
+*.toc
+*.log
+*.pdf

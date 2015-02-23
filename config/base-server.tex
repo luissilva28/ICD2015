@@ -1,0 +1,102 @@
+\section{Configuração Base dos Servidores da Infraestrutura}
+
+Todos os servidores que fazem parte da infraestrutura adotada para esta projeto partilham uma base configurativa em comum.
+Estas configurações devem ser vistas como configurações básicas de qualquer servidor, independentemente da função que este venha a desempenhar na arquitetura desenhada.
+
+Por forma a diminuir o tempo de configuração de cada máquina da infraestrutura, optou-se pela configuração inicial de uma primeira máquina.
+Todas os restantes servidores resultaram de um \textit{full clone} da primeira máquina que fora já configurada.
+Uma vez que se está a trabalhar com máquinas virtuais, o processo de clonagem destas é levado a cabo pelo \textit{software} de virtualização, o \textit{VMWare}.
+
+Cada um dos seguintes parágrafos diz respeito a um passo da configuração básica do servidor.
+
+\paragraphnl{Definição do Nome do Servidor}
+
+O nome do servidor é atributo mais relevante aquando da distinção deste entre os restantes.
+E dado que se está a trabalhar com um número elevado de servidores, este é um aspeto ainda mais relevante.
+
+A alteração do \textit{hostname} foi efetivada recorrendo à ferramenta \textit{hostnamectl}.
+
+\begin{figure}[!hbt]
+\begin{MyVerbatim}
+$ hostnamectl set-hostname <NOME_DO_SERVIDOR>+
+\end{MyVerbatim}
+\end{figure}
+
+\paragraphnl{Definição do IP Estático do Servidor}
+
+Após a definição do nome do servidor, é igualmente importante associar um endereço IP da rede interna da infraestrutura que não possa variar ao longo do tempo, isto é, que seja estático.
+Como é sabido, a infraestrutura funciona através de partilha de serviços entre das diversas camadas desta.
+
+Assim, como estes serviços necessitam das referências aos endereços IPv4 dos servidores envolvidos, a constante variação destes endereços implicaria que os ficheiros de configuração dos serviços fossem, também eles, constatemente alterados.
+
+O procedimento para a definição de um IP Estático é descrito em seguida.
+
+\begin{figure}[!hbt]
+\begin{MyVerbatim}
+$
+\end{MyVerbatim}
+\end{figure}
+
+\newpage
+
+\paragraphnl{Desativação do \textit{SE Linux} e da \textit{Firewall}}
+
+Dado se tratar de um projeto de ãmbito académico, e uma vez que o \textit{SE Linux} limita bastante a operacionalidade de um servidor numa arquitetura deste tipo sem que seja necessária configuração adicional para este serviço, optou-se por desativar estes dois serviços.
+
+No entato, se estivéssemos perante um ambiente real  de produção, o caminho a seguir seria o de configuração detalhada de ambos os serviços.
+
+O procedimento para desativação do \textit{SE Linux} encontra-se descrito de seguida.
+
+\begin{figure}[!hbt]
+\begin{MyVerbatim}
+$ vi /etc/selinux/config
+	SELINUX=disabled
+\end{MyVerbatim}
+\end{figure}
+
+Já quanto à desativação da \textit{firewall}, os comandos utilizados são apresentados a seguir.
+
+\begin{figure}[!hbt]
+\begin{MyVerbatim}
+$ systemctl stop firewalld
+$ systemctl mask firewalld
+\end{MyVerbatim}
+\end{figure}
+
+\paragraphnl{Configuração do Acesso ao Servidor via \textit{SSH}}
+
+A ferramenta \textit{SSH} permite aceder remotamente a um servidor.
+Este acesso torna possível correr uma \textit{shell} neste.
+
+O processo de autenticação do utilizador no servidor pode ser feito através do tradicional par \textit{username}/\textit{password} ou, de forma mais eficiente, recorrendo ao mecanismo de autenticação por chave pública.
+Este último foi o selecionado como método de autenticação nos servidores da infraestrutura.
+
+Assim, foi dado permissão de \textit{login} às chaves públicas dos utilizadores que podem ter acesso às máquinas.
+
+\begin{figure}[!hbt]
+\begin{MyVerbatim}
+$ cat $HOME/.ssh/id_rsa.pub | \
+ssh root@<IP_DO_SERVIDOR> "cat >> .ssh/authorized_keys"
+\end{MyVerbatim}
+\end{figure}
+
+\paragraphnl{Adição do Repositório \textit{Extra Packages for Enterprise Linux (EPEL)}}
+
+A junção do repositório \textit{EPEL} ao conjunto de repositórios de pacotes de \textit{software} geridos pelas ferramenta \textit{yum} permite ter acesso a um conjunto muito mais vasto de programas e bibliotecas do que aquele que os repositórios por defeito oferecem.
+Entre estes pacotes está, a título de exemplo, o software necessário à instalação e configuração do \textit{iSCSI}.
+
+\begin{figure}[!hbt]
+\begin{MyVerbatim}
+$ yum install epel-release
+\end{MyVerbatim}
+\end{figure}
+
+\paragraphnl{Instalação de \textit{Software} Fundamental}
+
+Todos os servidores deverão ter instalados no seu sistema um conjunto de ferramentas e bibliotecas primárias que possibilitem, depois, a instalação de \textit{software} adicional e especializado, como é o caso de um compilador de \textit{C} (\textit{gcc}).
+
+\begin{figure}[!hbt]
+\begin{MyVerbatim}
+$ yum -y install net-snmp gcc-c++ net-tools bash-completion
+\end{MyVerbatim}
+\end{figure}
