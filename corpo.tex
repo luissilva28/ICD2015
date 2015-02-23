@@ -23,6 +23,34 @@ O balanceador de carga fica entre o utlziador e os servidores Web Apache de back
 \subsection{Configurações}
 
 \subsection{Storage}
+-----------
+MUDAR IPS AQUI 
+-----------
+
+Para a configuração da nossa Storage precisamos de dois ingredientes, duas máquinas virtuais, sendo uma cliente e outra servidor, e acesso ao Cluster criado.
+Primeiramente no servidor devem ser executados os seguintes comandos:
+\framebox[1.1\width]{yum install scsi-target-utils} \par
+\framebox[1.1\width]{cat /etc/tgt/targets.conf} \par
+    <target iqn.2010-04.nl.meinit:node1.target1>
+    backing-store /iscsi1.img
+    initiator-address 172.16.0.2
+    </target>
+\framebox[1.1\width]{dd if=/dev/zero of=/iscsi1.img bs=1024 count=102400} \par
+\framebox[1.1\width]{chkconfig tgtd on} \par
+\framebox[1.1\width]{service tgtd start} \par
+
+De seguida, em todos clientes devem ser inseridos os seguintes comandos:
+\framebox[1.1\width]{yum install iscsi-initiator-utils} \par
+\framebox[1.1\width]{service iscsi start} \par
+\framebox[1.1\width]{iscsiadm -m discovery -t sendtargets -p 172.16.0.1} \par
+\framebox[1.1\width]{iscsiadm -m node -T iqn.2010-04.nl.meinit:node1.target1 -p 172.16.0.1 -l} \par
+\framebox[1.1\width]{chkconfig iscsi on} \par
+
+Finalmente, e para concluir a configuração, é necessário criar e montar o filesystem no cliente:
+\framebox[1.1\width]{fdisk /dev/sda} \par
+\framebox[1.1\width]{mkfs.ext3 /dev/sda1} \par
+\framebox[1.1\width]{echo "/dev/sda1 /mnt ext3 defaults,_netdev 0 0" >> /etc/fstab} \par
+
 
 \subsection{Cluster}
 
