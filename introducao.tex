@@ -10,60 +10,9 @@ De seguida, serão apresentados os resultados dos testes efetuados à infraestru
 A principal motivação na realização deste projeto, foca-se essencialmente na criação de uma infraestrutura, pois era algo que não tínhamos qualquer experiência à partida, e que no mundo real é extremamente importante. Por exemplo, no futuro caso seja necessário desenvolver uma aplicação de alta confiabilidade e escalabilidade, já temos os conhecimentos necessários, ou pelo menos, uma base sólida.
 O objetivo deste trabalho é conceber uma infraestrutura de centro de dados para integrar uma aplicação, instalando e configurando todo o software/hardware, assim como realizar um conjunto de testes, para medir a sua qualidade.
 
-\subsection{Estrutura do relatório}
-Este relatório foi escrito de forma a ser facilmente compreensivel, para facilitar a leitura e replicação do estudo realizado.
-Desta forma optou-se por dividir o relatório em capítulos diferentes, dividindo os mesmo em várias secções. Os capítulos principais deste relatório são os seguintes:
-
-\begin{description}
-
-\item[Configuração do sistema]
-Neste primeiro ponto, serão descritos todos os passos efetuados para a instalação e configuração do ambiente de testes.
-
-\item[Infraestrutura computacional]
-Neste ponto serão apresentados os diferentes componentes da infraestrutura criada.
-
-\item[Testes e análise de resultados]
-Neste ponto serão apresentados os vários testes efetuados bem como os resultados obtidos.
-
-\item[Conclusão]
-Neste ponto é feita uma avaliação crítica do projeto, apresentando as conclusões que achamos necessárias.
-
-\end{description}
-
 \subsection{O Projeto Graphite}
 
 O projeto Graphite é um sistema de gráficos em tempo real altamente escalável. O Graphite consiste em três componentes de software sendo elas \textbf{Carbon}, \textbf{Whisper} e \textbf{Web app}.
 \textbf{Carbon} A sua principal tarefa é recolher dados estatisticos da rede e armazená-los em disco.
 \textbf{Whisper} Esta componente é um formato de dados, ou seja, consiste num formato padrão para o armazenamento de dados de séries temporais.
 \textbf{Web App} Consiste num Web app em Django, que fornece uma interface gráfica para o Graphite, ou seja, esta será a interface onde será possivel ver os gráficos pretendidos. Est Web App, permite tambem efetuar uma gestão dos utilizadores, configurando assim quais os usuários que podem criar e guardar os gráficos.
-
-\subsubsection{Especificações do Equipamento utilizado}
-
-A infraestrutura foi implementada em 3 computadores, sendo que todos os servidores tinham uma versão minimal do CentOS 7.0 de 64 bits. As máquinas possuem as caracteristicas que se apresentam de seguida.
-
-\textbf{Máquina 1}
-\textbf{Sistema operativo nativo:} \textit{}
-\textbf{Processador:} \textit{}
-\textbf{Memoria:} \textit{}
-\textbf{Gráfica:} \textit{}
-\textbf{Tipo de armazenamento:} \textit{}
-\textbf{Capacidade de armazenamento da VM:} \textit{}
-\textbf{Sistema operativo da VM:} \textit{}
-
-\textbf{Máquina 2}
-\textbf{Sistema operativo nativo:} \textit{}
-\textbf{Processador:} \textit{}
-\textbf{Memoria:} \textit{}
-\textbf{Gráfica:} \textit{}
-\textbf{Tipo de armazenamento:} \textit{}
-\textbf{Capacidade de armazenamento da VM:} \textit{}
-\textbf{Sistema operativo da VM:} \textit{}
-
-\textbf{Máquina 3}
-\textbf{Sistema operativo nativo: Windows 8.1} \textit{}
-\textbf{Processador: i7-3630QM CPU @ 2.40 GHz} \textit{}
-\textbf{Memoria: 8GB} \textit{}
-\textbf{Gráfica: Geforce GT 650M} \textit{}
-\textbf{Tipo de armazenamento:} \textit{}
-\textbf{Capacidade de armazenamento da VM: 10Gb} \textit{}
-\textbf{Sistema operativo da VM: CentOS 7} \textit{}
