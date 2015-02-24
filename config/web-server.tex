@@ -2,21 +2,62 @@
 
 \paragraphnl{Instalação do Cliente de \textit{Network File System (NFS)}}
 
-O \textit{NFS} é um sistema de ficheiros distribuído e amplamente utilizado em infraestruturas computacionais.
-A característica primária deste sistema de ficheiros é a de que opera sobre em rede.
+A arquitetura criada para dar resposta ao problema prevê que o armazenamento de ficheiros da aplicação \textit{web} do \textit{Graphite} seja realizado na camada de \textit{storage}.
+No entanto, como a camada inferior à camada dos servidores \textit{web} é o \textit{cluster}, foi necessário adotar uma solução distribuída entre estas para se alcançar o objetivo delineado. \\
 
+Assim, recorreu-se ao \textit{NFS}.
+O \textit{NFS} é um sistema de ficheiros distribuído e amplamente utilizado em infraestruturas computacionais que opera sobre o paradigma de cliente/servidor.
+Então, neste mesmo modelo, o cliente de \textit{NFS} será o servidor \textit{web}, pelo que foi imperativo a sua configuração neste servidor. \\
+
+O processo de configuração pode ser consultado de seguida.
 
 \begin{figure}[!hbt]
 \begin{MyVerbatim}
-$ 
+# Instalação do cliente de NFS
+
+$ yum -y install nfs-utils
+
+# Inicialização dos serviços de cliente NFS
+
+$ service rpcbind start
+$ service rpcidmapd start
+$ service nfslock start
+
+# Montagem do sistema de ficheiros
+
+$ mount <IP_SERVIDOR>:<PASTA_SERVIDOR> <PASTA_LOCAL>
+
+# Automatização do processo de montagem após arranque do sistema
+
+$ vi /etc/fstab
+ <IP_SERVIDOR>:<PASTA_SERVIDOR>  <PASTA_LOCAL> nfs rw 0 0	
 \end{MyVerbatim}
 \end{figure}
 
 \paragraphnl{Instalação do Cliente de \textit{PostgreSQL}}
 
+O \textit{PostgreSQL} foi o SGBD escolhido para dar resposta à necessidade de acesso, por parte da aplicaçao \textit{web} do \textit{Graphite}, a uma base de dados do tipo relacional. \\
+
+Uma vez que a solução desenhada para a infraestrutura separa claramente o cliente e o servidor de base de dados, e como os servidores \textit{web} assumem o papel de clientes nesta infraestrutura, todos estes tiveram de instalar os pacotes respetivos ao cliente do \textit{PostgreSQL}.
+Entre os pacotes instalados, estão também as bibliotecas de suporte para \textit{Python}, dado que a aplicação \textit{web} referida foi desenvolvida nesta mesma linguagem.
 
 \begin{figure}[!hbt]
 \begin{MyVerbatim}
-$ 
+$ yum -y install postgresql postgresql-devel
+$ pip install psycopg2
+\end{MyVerbatim}
+\end{figure}
+
+\paragraphnl{Instalação e Configuração do \textit{Graphite}}
+
+O \textit{PostgreSQL} foi o SGBD escolhido para dar resposta à necessidade de acesso, por parte da aplicaçao \textit{web} do \textit{Graphite}, a uma base de dados do tipo relacional. \\
+
+Uma vez que a solução desenhada para a infraestrutura separa claramente o cliente e o servidor de base de dados, e como os servidores \textit{web} assumem o papel de clientes nesta infraestrutura, todos estes tiveram de instalar os pacotes respetivos ao cliente do \textit{PostgreSQL}.
+Entre os pacotes instalados, estão também as bibliotecas de suporte para \textit{Python}, dado que a aplicação \textit{web} referida foi desenvolvida nesta mesma linguagem.
+
+\begin{figure}[!hbt]
+\begin{MyVerbatim}
+$ yum -y install postgresql postgresql-devel
+$ pip install psycopg2
 \end{MyVerbatim}
 \end{figure}
