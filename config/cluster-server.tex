@@ -1,0 +1,51 @@
+\subsection{Configuração do Servidor \textit{Cluster}}
+
+Nesta secção irá percorrer-se todas as etapas necessárias para a construção de um \textit{Highly-Available Cluster}. As ferramentas de gestão para a configuração do servidor são \textit{Pacemaker/Corosync}.
+
+Compreende-se que neste momento praticamente já toda a estrutura está praticamente finalizada, faltando somente a construção do cluster.
+
+Para a implementação de um sistema \textit{Highly-Available Cluster} foram utilizadas as seguintes componentes:
+
+\begin{itemize}
+  \item High Availability Cluster
+  \item iSCSI Client
+  \item PostgreSQL
+  \item NFS Server
+  \item Multipath
+\end{itemize}
+
+O \textit{cluster} terá dois nodos, cluster0 e cluster1, e iSCSI para permitir partilhar do armazenamento a partir das máquinas de \textit{storage}.
+
+O primeiro passo passou por adicionar aos \textit{hosts} os nodos do cluster e storage utilizados para evitar falhas de DNS.
+
+Foram instalados os pacotes para a configuração do cluster.
+
+\begin{MyVerbatims}
+  \$ yum install -y pcs fence-agents-all iscsi-initiator-utils nfs-utils device-mapper-multipath postgresql-server
+\end{MyVerbatims}
+
+Optou-se por se inicializar primeiro a configuração do cluster com a alteração da chave de acesso ao \textit{hacluster} em ambas as máquinas.
+
+De seguida inicializou-se o serviço, também nos dois servidores.
+
+\begin{MyVerbatims}
+  \$ systemctl start pcsd.service
+  \$ systemctl enable pcsd.service
+\end{MyVerbatims}
+
+E a partir do nodo principal autorizou-se os servidores.
+
+\begin{MyVerbatims}
+  \$ pcs cluster auth cluster0 cluster1
+\end{MyVerbatims}
+
+Depois de configurado o iSCSI client é finalmente inicializado o serviço.
+
+\begin{MyVerbatims}
+  \$ pcs cluster setup --start --name webcluster cluster0 cluster1
+\end{MyVerbatims}
+
+Como o pacote já contém as ferramentas necessárias para gestão do cluster definiu-se quais os serviços que fazem parte do sistema e onde devem estar a ser executados.
+
+O NFS Server tem como principal objetivo criar um servidor \textit{Network FileSystem}, onde vários clientes se ligam ao armazenamento de dados.
+Como o \textit{iSCSI} disponibiliza targets que apontam para o mesmo caminho foi necessário instalar o \textit{Multipath} que adiciona dispositivos virtuais e gere o serviço até que cheguem aos dispositivos reais.

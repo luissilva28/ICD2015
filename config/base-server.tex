@@ -35,11 +35,26 @@ O procedimento para a definição de um IP Estático é descrito em seguida.
 
 \begin{figure}[!hbt]
 \begin{MyVerbatim}
-$
+TYPE=Ethernet
+BOOTPROTO=static  <<<
+DEFROUTE=yes
+PEERDNS=yes
+PEERROUTES=yes
+IPV4_FAILURE_FATAL=no
+IPADDR=10.0.1.10  <<<
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes
+IPV6_FAILURE_FATAL=no
+NAME=enp0s3       <<<
+UUID=75a170ba-6bfa-4553-8070-e658eb8ffb1e
+ONBOOT=yes        <<<
+
 \end{MyVerbatim}
 \end{figure}
 
-\newpage
 
 \paragraphnl{Desativação do \textit{SE Linux} e da \textit{Firewall}}
 
@@ -83,6 +98,7 @@ ssh root@<IP_DO_SERVIDOR> "cat >> .ssh/authorized_keys"
 \end{figure}
 
 \newpage
+
 \paragraphnl{Adição do Repositório \textit{Extra Packages for Enterprise Linux (EPEL)}}
 
 A junção do repositório \textit{EPEL} ao conjunto de repositórios de pacotes de \textit{software} geridos pelas ferramenta \textit{yum} permite ter acesso a um conjunto muito mais vasto de programas e bibliotecas do que aquele que os repositórios por defeito oferecem.
@@ -94,7 +110,6 @@ $ yum install epel-release
 \end{MyVerbatim}
 \end{figure}
 
-\newpage
 \paragraphnl{Instalação de \textit{Software} Fundamental}
 
 Todos os servidores deverão ter instalados no seu sistema um conjunto de ferramentas e bibliotecas primárias que possibilitem, depois, a instalação de \textit{software} adicional e especializado, como é o caso de um compilador de \textit{C} (\textit{gcc}).

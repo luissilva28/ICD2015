@@ -1,3 +1,26 @@
-\subsection{Configuração do Servidor \textit{Cluster}}
+\subsection{Configuração do Servidor \textit{Storage}}
 
+Para o correto funcionamento da Storage foi essencial a correta configuração dos serviços seguintes:
 
+\begin{itemize}
+  \item DRBD
+  \item iSCSI Target
+\end{itemize}
+
+Optou-se por primeiramente fazer a configuração do SCSI em execução, ao mesmo tempo, nas duas máquinas.
+
+\begin{MyVerbatims}
+  \$ yum install scsi-target-utils
+  \$ cat /etc/tgt/targets.conf
+    <target iqn.2015-02.com.icd:san.targetXX>
+      backing-store /dev/sdb
+      initiator-address 10.0.1.10
+    </target>
+  \$ dd if=/dev/zero of=/dev/sdb bs=1024 count=102400
+  \$ chkconfig tgtd on
+  \$ service tgtd start
+\end{MyVerbatims}
+
+O \textit{targetXX} é definido diferentemente em cada uma das máquinas. Neste caso na máquina storage0 é definido o target01 e na storage1 está definido o target02.
+
+Depois de inicializada a configuração do \textit{DRBD} é crucial definir o ficheiro de recurso das máquinas. Depois de terminada a configuração e inicializado o serviço obteve-se uma simulação de RAID1 se verifica, promovendo assim, a alta disponibilidade da infraestrutura.
