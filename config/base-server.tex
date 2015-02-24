@@ -35,7 +35,9 @@ O procedimento para a definição de um IP Estático é descrito em seguida.
 
 \begin{figure}[!hbt]
 \begin{MyVerbatim}
-$
+$ vi /etc/sysconfig/network-scripts/ifcfg-eno16777736
+	BOOTPROTO="static"
+	IPADDR="<IP_DO_SERVIDOR>"
 \end{MyVerbatim}
 \end{figure}
 
@@ -94,7 +96,6 @@ $ yum install epel-release
 \end{MyVerbatim}
 \end{figure}
 
-\newpage
 \paragraphnl{Instalação de \textit{Software} Fundamental}
 
 Todos os servidores deverão ter instalados no seu sistema um conjunto de ferramentas e bibliotecas primárias que possibilitem, depois, a instalação de \textit{software} adicional e especializado, como é o caso de um compilador de \textit{C} (\textit{gcc}).
