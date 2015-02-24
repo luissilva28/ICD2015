@@ -1,0 +1,95 @@
+\subsection{Configuração do Servidor \textit{Load Balancer}}
+
+Para implementar um sistema de distribuiçao de carga foram utilizados os próximos componentes:
+
+\begin{itemize}
+  \item HAProxy
+  \item keepalived
+\end{itemize}
+
+Para a configuração do \textit{HA-Load balancer} são necessários 2 máquinas físicas para os \textit{Load Balancer}. É necessário definir uma gama de endereços IP das próprias máquinas e saber quais os IP's das máquinas WEB.
+
+O \textit{HAProxy} será utilizado como o \textit{software} de balanceamento de carga entre os servidores e o \textit{keepalived} como uma solução de alta disponibilidade.
+
+Foram então instalados os componentes recorrendo ao \textit{yum} em ambos os nodos.
+
+\begin{MyVerbatims}
+  yum install -y haproxy keepalived
+\end{MyVerbatims}
+
+Adicionou-se ao haproxy os servidores WEB ativos no momento e alterou-se um parâmetro no \textit{frontend main}.
+
+\begin{MyVerbatims}
+  \$vi /etc/haproxy/haproxy.cfg
+    frontend  main *:8080
+    ....
+    backend app
+      balance     roundrobin
+      server  web0 192.168.73.177:8080 check
+      server  web1 192.168.73.211:8080 check
+\end{MyVerbatims}
+
+Como não estava a ser possível correr o servidor \textit{Apache} na porta 80 tivemos que utilizar a porta 8080.
+
+Foi ainda definido num ficheiro xml o serviço \textit{HAProxy}.
+
+\begin{MyVerbatims}
+  \$ vi /etc/firewalld/services/haproxy.xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <service>
+      <short>HAProxy</short>
+      <description>HAProxy load-balancer</description>
+      <port protocol="tcp" port="8080"/>
+    </service>
+\end{MyVerbatims}
+
+Finalmente ativou-se e inicializou-se o serviço nos dois servidores.
+
+\begin{MyVerbatims}
+  \$ systemctl enable haproxy
+  \$ systemctl start haproxy
+\end{MyVerbatims}
+
+De seguida foi necessário configurar o \textit{keepalived} em ambos os nodos anteriores. Alterou-se o ficheiro de configuração e definiu-se quais eram as interfaces a usar, assim como o estado de cada máquina (\textit{Master or Slave}) e o IP Virtual a utilizar para se receber comunicações exteriores.
+
+\begin{MyVerbatims}
+  \$ vi /etc/keepalived/keepalived.conf
+    vrrp_script chk_haproxy {
+      script "killall -0 haproxy" # check the haproxy process
+      interval 2 # every 2 seconds
+      weight 2
+    }
+
+    vrrp_instance VI_1 {
+      interface eno33554960 # interface to monitor
+      state MASTER # MASTER on haproxy1, BACKUP on haproxy2
+      virtual_router_id 51
+      priority 101 # 101 on haproxy1, 100 on haproxy2
+      virtual_ipaddress {
+        192.168.73.49 # virtual ip address
+      }
+      track_script {
+        chk_haproxy
+      }
+    }
+\end{MyVerbatims}
+
+A questão seguinte foi ativar e inicializar o serviço no sistema nas duas máquinas.
+
+\begin{MyVerbatims}
+  \$ systemctl enable keepalived
+  \$ systemctl start keepalived
+\end{MyVerbatims}
+
+Verifica-se então que o Virtual IP foi criado na primeira máquina.
+
+\begin{MyVerbatims}
+  ....
+  3: eno33554960: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 00:0c:29:8c:dd:55 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.73.200/24 brd 192.168.73.255 scope global eno33554960
+       valid_lft forever preferred_lft forever
+    inet 192.168.73.49/32 scope global eno33554960
+       valid_lft forever preferred_lft forever
+  ....
+\end{MyVerbatims}
