@@ -223,6 +223,21 @@ Este facto será evidenciado já na secção seguinte, onde será realizada uma 
 
 Uma justificação plausível para esta quebra de rendimento da infraestrutura para esta configuração pode dever-se à falta de recursos computacionais da máquina fisíca em que estavam em execução as máquinas virtuais respeitantes a este servidores.
 
+\newpage
 \subsection{Comparação das Configurações Analisadas}
 
-É abaixo exibido o gráfico global e comparativo de todas as configurações relativas ao número de servidores \textit{web} que a infraestrutura deverá apresentar.
+É abaixo exibido o gráfico global e comparativo dos valores do débito obtidos para todas as configurações relativas ao número de servidores \textit{web} que a infraestrutura deverá apresentar. \\
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.6]{img/ab/web-compare.png}
+\caption{Comparação do débito obtido em função do número de clientes para as várias configurações}
+\end{figure}
+
+Como já se fazia adivinhar, e como já fora comentado na parte final da secção anterior, a configuração que melhor resultados apresenta é a com \textbf{quatro} servidores \textit{web}. \\
+
+Este facto pode ser justificado por uma análise aos recursos fisícos da máquina onde todos os servidores \textit{web} foram executados.
+O processador desta é composto por quatro núcleos (\textit{quad-core}), e estando designada a cada máquina virtual um \textit{core}, é natural que a performance da infraestrutura atinga o seu pico quando apenas os quatro servidores estiverem em execução.
+Um número maior do que quatro servidores implica partilha dos recursos computacionais, resultando num \textit{overhead} computacional gasto na gestão de execução de processos pelo sistema operativo da máquina fisíca (\textit{context-switching}). \\
+
+O valor de débito máximo obtido foi de $69.28 pedidos/segundo$ e ocorreu para 32 clientes em simultâneo, na configuração com quatro servidores \textit{web}.
