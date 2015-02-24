@@ -50,14 +50,30 @@ $ pip install psycopg2
 
 \paragraphnl{Instalação e Configuração do \textit{Graphite}}
 
-O \textit{PostgreSQL} foi o SGBD escolhido para dar resposta à necessidade de acesso, por parte da aplicaçao \textit{web} do \textit{Graphite}, a uma base de dados do tipo relacional. \\
-
-Uma vez que a solução desenhada para a infraestrutura separa claramente o cliente e o servidor de base de dados, e como os servidores \textit{web} assumem o papel de clientes nesta infraestrutura, todos estes tiveram de instalar os pacotes respetivos ao cliente do \textit{PostgreSQL}.
-Entre os pacotes instalados, estão também as bibliotecas de suporte para \textit{Python}, dado que a aplicação \textit{web} referida foi desenvolvida nesta mesma linguagem.
+O \textit{Graphite} foi o serviço escolhido para operar na infraestrutura desenhada.
+A instalação deste \textit{software} é bastante facilitado pelo gestor de pacotes do \textit{Python}, o \textit{pip}.
 
 \begin{figure}[!hbt]
 \begin{MyVerbatim}
-$ yum -y install postgresql postgresql-devel
-$ pip install psycopg2
+# Instalar os pacotes necessários
+
+$ pip install django
+$ pip install Twisted
+$ pip install django-tagging
+$ pip install whisper
+$ pip install graphite-web
+$ pip install carbon
+
+# Configurar a base de dados
+
+$ python manage.py syncdb
+
+# Iniciar o carbon
+
+$ /opt/graphite/bin/carbon-cache.py start
+
+# Iniciar a aplicação web
+
+$ /opt/graphite/bin/run-graphite-devel-server.py /opt/graphite/
 \end{MyVerbatim}
 \end{figure}
