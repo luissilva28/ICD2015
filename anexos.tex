@@ -1,1 +1,21 @@
 \section{Anexos}
+
+\begin{figure}[!hbt]
+\begin{MyVerbatims}
+#!/bin/bash
+
+echo "Init benchmark.."
+echo
+
+for i in 1 2 4 8 16 32 64 128 256 512; do
+  echo "i = $i"
+  (ab -n $i -c $i http://192.168.73.49:8080/render?target=local.icd.x&format=json) | \
+  egrep -i "failed|requests per second"
+  echo
+done
+
+echo
+echo "End"
+\end{MyVerbatims}
+\caption{Script Benchmark}
+\end{figure}

@@ -2,6 +2,10 @@
 
 \paragraphnl{Resultados obtidos}
 
+São apresentados em seguida sob a forma de uma tabela e de um gráfico os dados recolhidos para a configuração do serviço com um servidor web, nomeadamente o número de pedidos por segundos (débito) e a percentagem de pedidos falhados.
+
+\begin{table}[!h]
+\centering
 \begin{tabular}{|c|c|c|}
 \hline
 \textbf{\# Clientes} & \textbf{Pedidos/s} & \textbf{\% Pedidos Falhados} \\ \hline
@@ -14,6 +18,14 @@
 64 & 17.76 & 0 \\ \hline
 128 & 12.28 & 23 \\ \hline
 \end{tabular}
+\caption{Tabela com débito e percentagem de pedidos falhados em função do número de clientes (1 Web Server)}
+\end{table}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.6]{img/ab/web1.png}
+\caption{Débito obtido de acordo com o número de clientes (1 Web Server)}
+\end{figure}
 
 \paragraphnl{Análise dos resultados anteriores}
 kjjkgh
