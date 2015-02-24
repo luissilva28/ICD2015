@@ -132,10 +132,14 @@ Até aqui, esta tem sida uma tendência dominante. \\
 No entanto, há que destacar, por um lado, a queda abrupta deste valor para um número maior de clientes ($128$) e a impactante percentagem de pacotes perdidos com $512$ clientes connectados em simultâneo.
 Este é um número demasiado relevante para ser ignorado, o que leva a crer que a atual configuração ainda não estará pronta para dar resposta a uma quantidade substancialmente grande de utilizadores ligados concorrentemente.
 
-\subsection{Configuração com 4 servidores WEB}
+\subsection{Configuração com Quatro Servidores \textit{Web}}
 
 \paragraphnl{Resultados obtidos}
 
+São apresentados em seguida sob a forma de uma tabela e de um gráfico os dados recolhidos para a configuração do serviço com \textbf{quatro} servidores web, nomeadamente o número de pedidos por segundos (débito) e a percentagem de pedidos falhados. \\
+
+\begin{table}[!h]
+\centering
 \begin{tabular}{|c|c|c|}
 \hline
 \textbf{\# Clientes} & \textbf{Pedidos/s} & \textbf{\% Pedidos Falhados} \\ \hline
@@ -149,17 +153,40 @@ Este é um número demasiado relevante para ser ignorado, o que leva a crer que 
 128 & 58.63 & 0 \\ \hline
 256 & 34.06 & 0 \\ \hline
 512 & 44.95 & 8 \\ \hline
-
 \end{tabular}
+\caption{Tabela com débito e percentagem de pedidos falhados em função do número de clientes (4 Web Servers)}
+\end{table}
 
-\paragraphnl{Análise dos resultados anteriores}
-olalalala
+\newpage
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.6]{img/ab/web4.png}
+\caption{Débito obtido de acordo com o número de clientes (4 Web Servers)}
+\end{figure}
+
+\paragraphnl{Análise aos resultados obtidos}
+
+Os dados exibidos na tabela e suportados pelo desenho do gráfico, de facto, não enganam.
+Estes são os melhores resultados globais, a todos níveis, obtidos até ao momento.
+Não se tinha conseguido, até então, estar tão consistentemente na gama de valores para o débito entre os $60$ e $70$ pedidos/segundo. \\
+
+Observa-se, para além disto, que também foi atingido um novo valor máximo para esta métrica.
+O valor é de, aproximadamente, $70$ pedidos/segundo e ocorre para $32$ clientes, quando na configuração anterior, com três servidores \textit{web}, este valor verificou-se para $8$ clientes em simultâneo. \\
+
+Comparando o rendimento para $512$ clientes com a configuração anterior, verifica-se que o débito de ambos é extremamente semelhante, mas a taxa de perda de pacotes é drasticamente supeior na configuração analisada anteriormente.
+Esta é, sem sombra de dúvida, uma excelente melhoria para o serviço prestado pela infrestrutura.
 
 
-\subsection{Configuração com 6 servidores WEB}
+\newpage
+\subsection{Configuração com Seis Servidores \textit{Web}}
+
+São apresentados em seguida sob a forma de uma tabela e de um gráfico os dados recolhidos para a configuração do serviço com \textbf{seis} servidores web, nomeadamente o número de pedidos por segundos (débito) e a percentagem de pedidos falhados. \\
 
 \paragraphnl{Resultados obtidos}
 
+\begin{table}[!h]
+\centering
 \begin{tabular}{|c|c|c|}
 \hline
 \textbf{\# Clientes} & \textbf{Pedidos/s} & \textbf{\% Pedidos Falhados} \\ \hline
@@ -173,8 +200,29 @@ olalalala
 128 & 18.01 & 0 \\ \hline
 256 & 33.70 & 0 \\ \hline
 512 & 45.13 & 7 \\ \hline
-
 \end{tabular}
+\caption{Tabela com débito e percentagem de pedidos falhados em função do número de clientes (6 Web Servers)}
+\end{table}
 
-\paragraphnl{Análise dos resultados anteriores}
-olalalala
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.6]{img/ab/web6.png}
+\caption{Débito obtido de acordo com o número de clientes (6 Web Servers)}
+\end{figure}
+
+\newpage
+\paragraphnl{Análise aos resultados obtidos}
+
+Os dados obtidos mostram, inequivocamente, que a \textit{performance} do servidor piorou com uma configuração de seis servidores \textit{web} em relação à configuração com apenas quatro. \\
+
+O valor máximo de débito atingido não excedeu os $60$ pedidos/segundo, o que é inferior ao registado na configuração anterior.
+Os valores médios desta métrica em função do número de clientes em simultâneo apresentam também piores resultados do que os observados na configuração anterior. \\
+
+Deste modo, é correto afirmar que a configuração anterior será a configuração ideal será a com quatro servidores \textit{web}.
+Este facto será evidenciado já na secção seguinte, onde será realizada uma comparação entre todas as configurações abordadas neste projeto. \\
+
+Uma justificação plausível para esta quebra de rendimento da infraestrutura para esta configuração pode dever-se à falta de recursos computacionais da máquina fisíca em que estavam em execução as máquinas virtuais respeitantes a este servidores.
+
+\subsection{Comparação das Configurações Analisadas}
+
+É abaixo exibido o gráfico global e comparativo de todas as configurações relativas ao número de servidores \textit{web} que a infraestrutura deverá apresentar.
